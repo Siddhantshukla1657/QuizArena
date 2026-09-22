@@ -1,0 +1,28 @@
+{
+  "name": "quizarena",
+  "version": "1.0.0",
+  "description": "Live, host-run quiz app — Kahoot-style, runs entirely local/LAN",
+  "scripts": {
+    "dev:server": "node server/index.js",
+    "dev:client": "vite client --port 5173",
+    "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\"",
+    "loadtest": "node loadtest/simulate.js",
+    "test": "node server/test-import.js"
+  },
+  "dependencies": {
+    "sql.js": "^1.12.0",
+    "cors": "^2.8.5",
+    "express": "^4.19.2",
+    "socket.io": "^4.7.5",
+    "uuid": "^10.0.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.3.1",
+    "concurrently": "^8.2.2",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.24.1",
+    "socket.io-client": "^4.7.5",
+    "vite": "^5.3.4"
+  }
+}
