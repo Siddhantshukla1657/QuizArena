@@ -3,17 +3,20 @@
   "version": "1.0.0",
   "description": "Live, host-run quiz app — Kahoot-style, runs entirely local/LAN",
   "scripts": {
+    "start": "node server/index.js",
+    "build": "vite build client",
     "dev:server": "node server/index.js",
-    "dev:client": "vite client --port 5173",
+    "dev:client": "vite client --host 0.0.0.0 --port 5173",
     "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\"",
     "loadtest": "node loadtest/simulate.js",
-    "test": "node server/test-import.js"
+    "test": "node server/test-import.js && node server/test-answer-reveal.js"
   },
   "dependencies": {
-    "sql.js": "^1.12.0",
     "cors": "^2.8.5",
     "express": "^4.19.2",
+    "qrcode": "^1.5.4",
     "socket.io": "^4.7.5",
+    "sql.js": "^1.12.0",
     "uuid": "^10.0.0"
   },
   "devDependencies": {

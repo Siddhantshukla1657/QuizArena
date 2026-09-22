@@ -1,0 +1,10 @@
+node_modules
+.git
+.agents
+.gemini
+dist
+client/dist
+*.log
+npm-debug.log*
+.DS_Store
+server/quiz.db

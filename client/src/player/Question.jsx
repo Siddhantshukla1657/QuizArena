@@ -74,7 +74,7 @@ export default function Question() {
       navigate('/result', {
         state: {
           ...data,
-          question,
+          question: data.question || question,
           pin,
         },
       });
@@ -97,6 +97,8 @@ export default function Question() {
         }
       } else if (data.phase === 'lobby') {
         navigate('/waiting', { state: { pin } });
+      } else if (data.phase === 'leaderboard' || data.phase === 'question-closed') {
+        navigate('/result', { state: { pin, ...data } });
       }
     };
 
@@ -294,7 +296,7 @@ export default function Question() {
                   <span
                     style={{
                       background: 'rgba(255, 255, 255, 0.95)',
-                      color: idx === 2 ? '#14121F' : 'var(--color-ans-d)',
+                      color: '#14121F',
                       borderRadius: '50%',
                       width: '26px',
                       height: '26px',
@@ -303,6 +305,7 @@ export default function Question() {
                       justifyContent: 'center',
                       flexShrink: 0,
                     }}
+                    title="Selected"
                   >
                     <IconCheck size={16} strokeWidth={3} />
                   </span>

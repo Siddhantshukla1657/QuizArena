@@ -1,4 +1,4 @@
-﻿/**
+/**
  * socket/index.js - Register all Socket.IO event handlers
  */
 const db = require('../db');
@@ -76,7 +76,30 @@ module.exports = function registerSocketHandlers(io) {
       const accepted = submitAnswer(room, sessionToken, optionIdx);
       if (accepted) {
         socket.emit('answer:ack', { accepted: true });
-        // Immediate (non-throttled) count update is handled by the interval in startQuestion
+
+        // Immediate count update to host
+        io.to(`room:${room.pin}:host`).emit('answer:count', {
+          answered: room.currentAnswers.size,
+          total: room.players.size,
+        });
+
+        // Check if all players have answered
+        // Only close early if ALL registered players in the room have answered
+        const allAnswered =
+          room.players.size > 0 &&
+          room.currentAnswers.size >= room.players.size;
+
+        if (allAnswered) {
+          if (room.timer) {
+            clearTimeout(room.timer);
+            room.timer = null;
+          }
+          setTimeout(() => {
+            if (room.phase === 'question-active') {
+              closeQuestion(io, room);
+            }
+          }, 400);
+        }
       } else {
         socket.emit('answer:ack', { accepted: false, reason: room.phase !== 'question-active' ? 'time_up' : 'already_submitted' });
       }

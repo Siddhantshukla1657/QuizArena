@@ -1,4 +1,4 @@
-﻿/**
+/**
  * db.js - SQLite database using sql.js (pure WebAssembly, no native compilation)
  *
  * sql.js is entirely in-memory by default. We persist to a file on disk using
@@ -8,7 +8,7 @@ const initSqlJs = require('sql.js');
 const fs = require('fs');
 const path = require('path');
 
-const DB_PATH = path.join(__dirname, 'quiz.db');
+const DB_PATH = process.env.DATABASE_PATH || path.join(__dirname, 'quiz.db');
 
 let db = null;
 
@@ -16,6 +16,10 @@ let db = null;
 function save() {
   if (!db) return;
   const data = db.export();
+  const dir = path.dirname(DB_PATH);
+  if (!fs.existsSync(dir)) {
+    fs.mkdirSync(dir, { recursive: true });
+  }
   fs.writeFileSync(DB_PATH, Buffer.from(data));
 }
 

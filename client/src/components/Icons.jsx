@@ -275,3 +275,30 @@ export function IconFileCode({ size = 18, className = '' }) {
     </svg>
   );
 }
+
+export function IconQr({ size = 18, className = '' }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" className={className} aria-hidden="true">
+      <rect x="3" y="3" width="7" height="7" rx="1.5" stroke="currentColor" strokeWidth="2" />
+      <rect x="5.5" y="5.5" width="2" height="2" fill="currentColor" />
+      <rect x="14" y="3" width="7" height="7" rx="1.5" stroke="currentColor" strokeWidth="2" />
+      <rect x="16.5" y="5.5" width="2" height="2" fill="currentColor" />
+      <rect x="3" y="14" width="7" height="7" rx="1.5" stroke="currentColor" strokeWidth="2" />
+      <rect x="5.5" y="16.5" width="2" height="2" fill="currentColor" />
+      <path d="M14 14H15V15H14V14Z" fill="currentColor" />
+      <path d="M17 14H20V17H17V14Z" fill="currentColor" />
+      <path d="M14 17H17V20H14V17Z" fill="currentColor" />
+      <path d="M19 19H21V21H19V19Z" fill="currentColor" />
+    </svg>
+  );
+}
+
+export function IconLink({ size = 18, className = '' }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" className={className} aria-hidden="true">
+      <path d="M10 13A5 5 0 0 0 17.54 13.54L20.54 10.54A5 5 0 0 0 13.46 3.46L11.54 5.38" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M14 11A5 5 0 0 0 6.46 10.46L3.46 13.46A5 5 0 0 0 10.54 20.54L12.46 18.62" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+

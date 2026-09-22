@@ -200,11 +200,10 @@ export default function LiveQuestion() {
         <div className="answers-grid" style={{ marginBottom: 'var(--sp-6)' }}>
           {question.options.map((opt, i) => {
             const Shape = ANSWER_SHAPES[i];
-            const isCorrect = i === question.correctOptionIndex;
             return (
               <div
                 key={i}
-                className={`answer-tile ${ANS_CLASSES[i]} ${isCorrect ? 'highlight-correct' : ''}`}
+                className={`answer-tile ${ANS_CLASSES[i]}`}
                 style={{
                   minHeight: '84px',
                   padding: 'var(--sp-4) var(--sp-5)',
@@ -217,24 +216,6 @@ export default function LiveQuestion() {
                 <span style={{ flex: 1, fontSize: '18px', fontWeight: '600' }}>
                   {opt}
                 </span>
-                {isCorrect && (
-                  <span
-                    style={{
-                      background: '#ffffff',
-                      color: 'var(--color-ans-d)',
-                      borderRadius: '50%',
-                      width: '26px',
-                      height: '26px',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      flexShrink: 0,
-                    }}
-                    title="Correct answer (host preview)"
-                  >
-                    <IconCheck size={16} strokeWidth={3} />
-                  </span>
-                )}
               </div>
             );
           })}

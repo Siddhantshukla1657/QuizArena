@@ -106,14 +106,19 @@ export default function Leaderboard() {
                   className="badge badge-emerald"
                   style={{
                     display: 'inline-flex',
-                    padding: '6px 14px',
-                    fontSize: '13px',
-                    marginTop: 'var(--sp-1)',
+                    padding: '8px 16px',
+                    fontSize: '14px',
+                    marginTop: 'var(--sp-2)',
+                    alignItems: 'center',
+                    gap: '8px',
                   }}
                 >
-                  <IconCheck size={14} strokeWidth={3} />
+                  <IconCheck size={16} strokeWidth={3} />
                   <span>
-                    Correct Option: {String.fromCharCode(65 + results.correctOptionIndex)}
+                    Correct Answer: <strong>Option {String.fromCharCode(65 + results.correctOptionIndex)}</strong>
+                    {results.question?.options?.[results.correctOptionIndex]
+                      ? ` — ${results.question.options[results.correctOptionIndex]}`
+                      : ''}
                   </span>
                 </div>
               )}

@@ -1,4 +1,4 @@
-﻿/**
+/**
  * server/index.js - Express + Socket.IO entry point
  */
 const express = require('express');
@@ -19,8 +19,12 @@ async function main() {
 
   const app = express();
   const server = http.createServer(app);
+  server.keepAliveTimeout = 65000;
+  server.headersTimeout = 66000;
   const io = new Server(server, {
     cors: { origin: '*', methods: ['GET', 'POST'] },
+    pingTimeout: 30000,
+    pingInterval: 10000,
   });
 
   // Middleware
@@ -32,6 +36,22 @@ async function main() {
 
   // Health check
   app.get('/api/health', (req, res) => res.json({ status: 'ok' }));
+
+  // Server info (used for LAN QR code detection)
+  app.get('/api/server-info', (req, res) => {
+    const os = require('os');
+    const nets = os.networkInterfaces();
+    let lanIp = 'localhost';
+    for (const iface of Object.values(nets)) {
+      for (const net of iface) {
+        if (net.family === 'IPv4' && !net.internal) {
+          lanIp = net.address;
+          break;
+        }
+      }
+    }
+    res.json({ lanIp, port: PORT });
+  });
 
   // Serve static client build (for production LAN demo)
   const clientDist = path.join(__dirname, '..', 'client', 'dist');

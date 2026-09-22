@@ -1,10 +1,13 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import socket from '../socket';
 import { IconLogo, IconPlay } from '../components/Icons';
 
 export default function Join() {
-  const [pin, setPin] = useState('');
+  const [searchParams] = useSearchParams();
+  const urlPin = (searchParams.get('pin') || '').replace(/\D/g, '').slice(0, 6);
+
+  const [pin, setPin] = useState(urlPin);
   const [nickname, setNickname] = useState('');
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
@@ -155,7 +158,7 @@ export default function Join() {
                 setPin(e.target.value.replace(/\D/g, ''));
                 setErrors((prev) => ({ ...prev, pin: '' }));
               }}
-              autoFocus
+              autoFocus={!urlPin}
               style={{ textAlign: 'center', letterSpacing: '4px', fontSize: '24px', fontWeight: '700' }}
             />
             {errors.pin && (
@@ -184,6 +187,7 @@ export default function Join() {
                 setNickname(e.target.value);
                 setErrors((prev) => ({ ...prev, nickname: '' }));
               }}
+              autoFocus={!!urlPin}
               style={{ textAlign: 'center', fontWeight: '600' }}
             />
             {errors.nickname && (

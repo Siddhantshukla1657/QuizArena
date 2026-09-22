@@ -15,6 +15,12 @@ export default function Waiting() {
       navigate('/question', { state: { question: data, pin } });
     });
 
+    socket.on('reconnect:success', (data) => {
+      if (data.phase === 'question-active' && data.question) {
+        navigate('/question', { state: { question: data.question, pin } });
+      }
+    });
+
     socket.on('room:closed', ({ reason }) => {
       sessionStorage.clear();
       navigate('/join');
@@ -23,6 +29,7 @@ export default function Waiting() {
 
     return () => {
       socket.off('question:show');
+      socket.off('reconnect:success');
       socket.off('room:closed');
     };
   }, [navigate, pin]);

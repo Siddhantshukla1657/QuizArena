@@ -56,14 +56,24 @@ export default function Result() {
       navigate('/join');
     };
 
+    const handleReconnectSuccess = (data) => {
+      if (data.phase === 'question-active' && data.question) {
+        navigate('/question', { state: { question: data.question, pin } });
+      } else if (data.phase === 'ended') {
+        setIsFinal(true);
+      }
+    };
+
     socket.on('question:show', handleQuestionShow);
     socket.on('quiz:ended', handleQuizEnded);
     socket.on('room:closed', handleRoomClosed);
+    socket.on('reconnect:success', handleReconnectSuccess);
 
     return () => {
       socket.off('question:show', handleQuestionShow);
       socket.off('quiz:ended', handleQuizEnded);
       socket.off('room:closed', handleRoomClosed);
+      socket.off('reconnect:success', handleReconnectSuccess);
     };
   }, [navigate, pin]);
 

@@ -1,4 +1,4 @@
-﻿/**
+/**
  * gameEngine.js - Timer, scoring, leaderboard computation
  */
 const roomManager = require('./roomManager');
@@ -18,8 +18,8 @@ function startQuestion(io, room) {
   room.questionStartedAt = Date.now();
   room.currentAnswers = new Map();
 
-  // Payload sent to players - correct_option_index is intentionally excluded
-  const playerPayload = {
+  // Question payload - correct_option_index is intentionally excluded for both players and host
+  const questionPayload = {
     questionIndex: room.currentQuestionIndex,
     totalQuestions: room.quiz.questions.length,
     text: question.text,
@@ -28,11 +28,8 @@ function startQuestion(io, room) {
     pointsValue: question.points_value,
   };
 
-  // Host gets the correct answer highlighted
-  const hostPayload = { ...playerPayload, correctOptionIndex: question.correct_option_index };
-
-  io.to(`room:${room.pin}:players`).emit('question:show', playerPayload);
-  io.to(`room:${room.pin}:host`).emit('question:show', hostPayload);
+  io.to(`room:${room.pin}:players`).emit('question:show', questionPayload);
+  io.to(`room:${room.pin}:host`).emit('question:show', questionPayload);
 
   // Set server-side timer
   if (room.timer) clearTimeout(room.timer);
@@ -87,6 +84,10 @@ function closeQuestion(io, room) {
 
   const payload = {
     correctOptionIndex: question.correct_option_index,
+    question: {
+      text: question.text,
+      options: question.options,
+    },
     leaderboard,
     isLastQuestion: isLast,
   };

@@ -50,10 +50,21 @@ if not exist "node_modules\" (
 for /f "tokens=5" %%a in ('netstat -aon ^| findstr ":3001 "') do taskkill /f /pid %%a >nul 2>&1
 for /f "tokens=5" %%a in ('netstat -aon ^| findstr ":5173 "') do taskkill /f /pid %%a >nul 2>&1
 
+:: Detect local IPv4 address for other devices
+set "LOCAL_IP=localhost"
+set "FOUND_IP="
+for /f "tokens=2 delims=:" %%a in ('ipconfig ^| findstr /c:"IPv4 Address" /c:"IP Address"') do (
+    for /f "tokens=1" %%b in ("%%a") do if not defined FOUND_IP (
+        set "LOCAL_IP=%%b"
+        set "FOUND_IP=1"
+    )
+)
+
 echo [INFO] Starting QuizArena Backend [Port 3001] and Frontend [Port 5173]...
+echo [INFO] Bound to 0.0.0.0 (open to other screens, phones, and port forwarding).
 echo.
-echo   Host Dashboard : http://localhost:5173/
-echo   Player Join    : http://localhost:5173/join
+echo   Host Dashboard (This PC)    : http://localhost:5173/
+echo   Player Join (Other Devices) : http://%LOCAL_IP%:5173/join
 echo.
 echo Press Ctrl+C in this terminal window to stop all servers.
 echo ============================================================
